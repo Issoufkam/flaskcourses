@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Compilation') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage('Tests d\'interface utilisateur') {
+            steps {
+                sh 'mvn test -Dtest=MySeleniumTest'
+            }
+        }
+        stage('Tests de charge') {
+            steps {
+                sh 'jmeter -n -t MyJMeterTest.jmx -l results.jtl'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                    archiveArtifacts artifacts: 'results.jtl', fingerprint: true
+                }
+            }
+        }
+    }
+}
