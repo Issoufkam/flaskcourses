@@ -1,52 +1,56 @@
-clearpipeline {
+pipeline {
     agent any
 
     stages {
-        stage('clone') {
+        stage('Checkout') {
             steps {
-                // Récupère le code depuis le dépôt GitHub
-                sh 'rm -rf *'
-                git 'https://github.com/Issoufkam/flaskcourses.git'
+                // Cloner le référentiel Git
+                git branch: 'main', url: 'https://github.com/Issoufkam/flaskcourses.git'
             }
         }
 
-        //stage('Build') {
-        //    steps {
-                // Étape de construction, si nécessaire
-                
-                // Vous pouvez compiler, installer les dépendances, etc.
-        //        sh 'pip install -r requirements.txt'
-        //    }
-        //}
-
-        stage('Test JMeter') {
+        stage('Install dependencies') {
             steps {
-                 //Exécutez les tests JMeter
-                 //Assurez-vous d'avoir JMeter installé sur le système
-                sh 'jmeter -n -t chemin/vers/votre/test.jmx'
+                // Installer les dépendances Python avec pip
+                sh 'pip install -r requirements.txt'
             }
         }
 
-        stage('Test Selenium') {
+        stage('Lint') {
             steps {
-                // Exécutez les tests Selenium
-                sh 'python test_selenium.py'
-                // Assurez-vous d'avoir Selenium installé et les navigateurs appropriés configurés
-                // Utilisez les commandes ou les outils spécifiques à votre langage de programmation pour exécuter les tests Selenium
+                // Exécuter un linter pour vérifier le style du code
+                sh 'flake8'
             }
         }
 
-        stage('Package') {
+        stage('Unit tests') {
             steps {
-                // Génère l'artefact à déployer
-                sh 'python setup.py sdist bdist_wheel'
+                // Exécuter les tests unitaires avec pytest
+                sh 'pytest'
             }
         }
 
-        stage('Deploy') {
+        stage('Build') {
             steps {
-                sh 'pip install twine'
-                sh 'twine upload dist/*'
+                // Exécuter des étapes de construction supplémentaires si nécessaire
+                // Par exemple, pour construire un package ou un exécutable
+                sh 'python setup.py build'
+            }
+        }
+
+        stage('Publish') {
+            steps {
+                // Publier ou distribuer votre application
+                // Par exemple, pour publier sur PyPI
+                sh 'python setup.py sdist upload -r pypi'
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                // Nettoyer après le déploiement ou la distribution
+                // Par exemple, supprimer les fichiers temporaires ou les artefacts de construction
+                sh 'rm -rf build dist'
             }
         }
     }
