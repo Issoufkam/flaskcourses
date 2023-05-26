@@ -27,7 +27,7 @@ pipeline {
         
         stage('Run Python script') {
             steps {
-                // Exécuter le script Python
+                // Exécuter le script Python bun
                 sh 'python3 path/to/your_script.py'
             }
         }
