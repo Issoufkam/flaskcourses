@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    
     stages {
         stage('Checkout') {
             steps {
@@ -8,39 +8,35 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/Issoufkam/flaskcourses.git'
             }
         }
-
+        
+        stage('Install Python') {
+            steps {
+                // Installer Python
+                sh 'sudo apt-get update'
+                sh 'sudo apt-get install -y python3'
+                sh 'sudo apt-get install -y python3-pip'
+            }
+        }
+        
         stage('Install dependencies') {
             steps {
-                // Installer les dépendances Python avec pip
-                sh 'pip install -r requirements.txt'
+                // Installer les dépendances Python
+                sh 'pip3 install -r requirements.txt'
             }
         }
-
         
-
+        stage('Run Python script') {
+            steps {
+                // Exécuter le script Python
+                sh 'python3 path/to/your_script.py'
+            }
+        }
         
-
-        stage('Build') {
-            steps {
-                // Exécuter des étapes de construction supplémentaires si nécessaire
-                // Par exemple, pour construire un package ou un exécutable
-                sh 'python setup.py build'
-            }
-        }
-
-        stage('Publish') {
-            steps {
-                // Publier ou distribuer votre application
-                // Par exemple, pour publier sur PyPI
-                sh 'python setup.py sdist upload -r pypi'
-            }
-        }
-
+        // Autres étapes de votre pipeline...
+        
         stage('Cleanup') {
             steps {
-                // Nettoyer après le déploiement ou la distribution
-                // Par exemple, supprimer les fichiers temporaires ou les artefacts de construction
-                sh 'rm -rf build dist'
+                // Nettoyer après l'exécution du pipeline
             }
         }
     }
