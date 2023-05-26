@@ -19,13 +19,13 @@ clearpipeline {
             }
         }
 
-        //stage('Test JMeter') {
-         //   steps {
-                // Exécutez les tests JMeter
-                // Assurez-vous d'avoir JMeter installé sur le système
-                //sh 'jmeter -n -t chemin/vers/votre/test.jmx'
-          //  }
-       // }
+        stage('Test JMeter') {
+            steps {
+                 //Exécutez les tests JMeter
+                 //Assurez-vous d'avoir JMeter installé sur le système
+                sh 'jmeter -n -t chemin/vers/votre/test.jmx'
+            }
+        }
 
         stage('Test Selenium') {
             steps {
