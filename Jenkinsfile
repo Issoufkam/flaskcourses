@@ -19,6 +19,7 @@ pipeline {
         stage('Lint') {
             steps {
                 // Exécuter un linter pour vérifier le style du code
+                sh 'pip install flake8'
                 sh 'flake8'
             }
         }
