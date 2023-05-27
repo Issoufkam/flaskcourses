@@ -18,7 +18,13 @@ pipeline {
             }
         }
 
-        
+
+        stage('Unit tests') {
+            steps {
+                // Exécuter les tests unitaires avec pytest
+                sh 'pytest'
+            }
+        }
 
         
 
