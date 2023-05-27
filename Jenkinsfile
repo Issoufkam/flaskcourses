@@ -13,7 +13,7 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 // Installer les dépendances Python avec pip
-                sh 'pip install -r requirements.txt'
+                sh 'pip3 install -r requirements.txt'
             }
         }
 
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 // Exécuter des étapes de construction supplémentaires si nécessaire
                 // Par exemple, pour construire un package ou un exécutable
-                sh 'python setup.py build'
+                sh 'python3 setup.py build'
             }
         }
 
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 // Publier ou distribuer votre application
                 // Par exemple, pour publier sur PyPI
-                sh 'python setup.py sdist upload -r pypi'
+                sh 'python3 setup.py sdist upload -r pypi'
             }
         }
 
