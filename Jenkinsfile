@@ -8,6 +8,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/Issoufkam/flaskcourses.git'
             }
         }
+    }
         
 
         stage('Install dependencies') {
