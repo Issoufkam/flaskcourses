@@ -21,11 +21,15 @@ pipeline {
 
         
 
-        stage('Build') {
+        stage('Build') { 
+            agent {
+                docker {
+                    image 'python:2-alpine' 
+                }
+            }
             steps {
-                // Exécuter des étapes de construction supplémentaires si nécessaire
-                // Par exemple, pour construire un package ou un exécutable
-                sh 'python3 setup.py build'
+                sh 'python -m py_compile sources/add2vals.py sources/calc.py' 
+                stash(name: 'compiled-results', includes: 'sources/*.py*') 
             }
         }
 
