@@ -21,14 +21,18 @@ pipeline {
 
         
 
-        //stage('Build') {
-        //    steps {
+        stage('Build') {
+            agent {
+                docker {
+                    image 'python'
+            }
+            steps {
                 // Exécuter des étapes de construction supplémentaires si nécessaire
                 // Par exemple, pour construire un package ou un exécutable
                 
-        //        sh 'python3 setup.py build'
-        //    }
-        //}
+               sh 'python3 app.py build'
+            }
+        }
 
        // stage('Publish') {
         //    steps {
