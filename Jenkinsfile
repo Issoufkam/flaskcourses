@@ -2,43 +2,18 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                checkout scm
+                sh 'docker build -t mon-image:latest .'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Push to Registry') {
             steps {
-                script {
-                    def imageName = "flaskcourses:latest"
-                    def dockerfile = 'Dockerfile'
-
-                    // Construction de l'image Docker
-                    docker.withRegistry('') {
-                        def dockerImage = docker.build(imageName, "-f ${dockerfile} .")
-
-                        // Tag de l'image avec le numéro de version du pipeline
-                        dockerImage.tag("${imageName}-${env.BUILD_NUMBER}")
-                    }
-                }
+                sh 'docker push mon-image:latest'
             }
         }
 
-        stage('Publish Docker Image') {
-            steps {
-                script {
-                    def imageName = "flaskcourses:latest"
-
-                    // Publication de l'image Docker
-                    docker.withRegistry('', '') {
-                        def dockerImage = docker.image(imageName)
-
-                        // Publication de l'image avec le numéro de version du pipeline
-                        dockerImage.push("${imageName}-${env.BUILD_NUMBER}")
-                    }
-                }
-            }
-        }
+        // Ajoutez d'autres étapes de votre pipeline CI/CD ici
     }
 }

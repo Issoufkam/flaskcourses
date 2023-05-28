@@ -1,11 +1,20 @@
-FROM python
+# Utilisez une image de base contenant Python et Flask
+FROM python:3.10-slim
 
+# Installez Git pour pouvoir cloner le dépôt
+RUN apt-get update && apt-get install -y git
+
+# Créez un répertoire de travail dans le conteneur
 WORKDIR /app
 
-# RUN apk update && apk add --no-cache git
-
+# Clonez le dépôt GitHub
 RUN git clone https://github.com/Issoufkam/flaskcourses.git .
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Installez les dépendances du projet Flask
+RUN pip install -r requirements.txt
 
-CMD [ "python", "app.py" ]
+# Exposez le port sur lequel votre application Flask s'exécute
+EXPOSE 5000
+
+# Démarrez l'application Flask
+CMD ["python", "app.py"]
