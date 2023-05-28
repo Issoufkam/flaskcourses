@@ -1,47 +1,27 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('Checkout') {
-            steps {
-                // Cloner le référentiel Git
-                git branch: 'main', url: 'https://github.com/Issoufkam/flaskcourses.git'
-            }
+    agent {
+        docker {
+            image 'python'
         }
     }
-        
-
-        stage('Install dependencies') {
+    
+    stages {
+        stage('Build') {
             steps {
-                // Installer les dépendances Python avec pip
-                sh 'pip3 install -r requirements.txt'
+                sh 'pip install -r requirements.txt'
             }
         }
-
-
-        stage('Unit tests') {
+        
+        stage('Test') {
             steps {
-                // Exécuter les tests unitaires avec pytest
-                sh 'pytest'
+                sh 'python run_tests.py'
             }
         }
-
         
-
-       // stage('Publish') {
-        //    steps {
-                // Publier ou distribuer votre application
-                // Par exemple, pour publier sur PyPI
-         //       sh 'python3 setup.py sdist upload -r pypi'
-         //   }
-        //}
-
-        //stage('Cleanup') {
-         //   steps {
-                // Nettoyer après le déploiement ou la distribution
-                // Par exemple, supprimer les fichiers temporaires ou les artefacts de construction
-         //       sh 'rm -rf build dist'
-        //    }
-        //}
+        stage('Deploy') {
+            steps {
+                sh 'python deploy.py'
+            }
+        }
     }
 }
