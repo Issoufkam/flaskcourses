@@ -1,8 +1,8 @@
-FROM python:3-alpine
+FROM python
 
 WORKDIR /app
 
-RUN apk update && apk add --no-cache git
+# RUN apk update && apk add --no-cache git
 
 RUN git clone https://github.com/Issoufkam/flaskcourses.git .
 
