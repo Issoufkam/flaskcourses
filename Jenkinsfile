@@ -2,15 +2,12 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone repository') {
-            steps {
-                git 'https://github.com/Issoufkam/flaskcourses.git'
-            }
-        }
-
         stage('Build Docker image') {
             steps {
-                sh 'docker build -t my-flask-app .'
+                script {
+                    def dockerImage = docker.build('my-flask-app:latest', '-f Dockerfile .')
+                    dockerImage.push()
+                }
             }
         }
 
