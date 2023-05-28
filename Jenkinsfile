@@ -2,18 +2,18 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Clone repository') {
             steps {
-                sh 'docker build -t mon-image:latest .'
+                git 'https://github.com/Issoufkam/flaskcourses.git'
             }
         }
 
-        stage('Push to Registry') {
+        stage('Build Docker image') {
             steps {
-                sh 'docker push mon-image:latest'
+                sh 'docker build -t my-flask-app .'
             }
         }
 
-        // Ajoutez d'autres étapes de votre pipeline CI/CD ici
+        // Add more stages for additional steps in your CI/CD pipeline
     }
 }
