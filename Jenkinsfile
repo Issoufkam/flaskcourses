@@ -11,7 +11,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def imageName = "flaskcourses:latest"
+                    def imageName = "monapp:latest"
                     def dockerfile = 'Dockerfile'
 
                     // Construction de l'image Docker
@@ -19,7 +19,7 @@ pipeline {
                         def dockerImage = docker.build(imageName, "-f ${dockerfile} .")
 
                         // Tag de l'image avec le numéro de version du pipeline
-                        dockerImage.tag("${monapp}-${env.BUILD_NUMBER}")
+                        dockerImage.tag("${imageName}-${env.BUILD_NUMBER}")
                     }
                 }
             }
@@ -28,14 +28,14 @@ pipeline {
         stage('Publish Docker Image') {
             steps {
                 script {
-                    def imageName = "flaskcourses:latest"
+                    def imageName = "monapp:latest"
 
                     // Publication de l'image Docker
                     docker.withRegistry('', '') {
-                        def dockerImage = docker.image(monapp)
+                        def dockerImage = docker.image(imageName)
 
                         // Publication de l'image avec le numéro de version du pipeline
-                        dockerImage.push("${monapp}-${env.BUILD_NUMBER}")
+                        dockerImage.push("${imageName}-${env.BUILD_NUMBER}")
                     }
                 }
             }
