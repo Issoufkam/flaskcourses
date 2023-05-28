@@ -11,7 +11,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def imageName = "monapp:latest"
+                    def imageName = "flaskcourses:latest"
                     def dockerfile = 'Dockerfile'
 
                     // Construction de l'image Docker
@@ -28,7 +28,7 @@ pipeline {
         stage('Publish Docker Image') {
             steps {
                 script {
-                    def imageName = "monapp:latest"
+                    def imageName = "flaskcourses:latest"
 
                     // Publication de l'image Docker
                     docker.withRegistry('', '') {
