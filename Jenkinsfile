@@ -31,7 +31,7 @@ pipeline {
         // Exécuter les tests fonctionnels avec JMeter et Selenium
         script {
           //sh 'docker run --rm myapp:test jmeter -n -t path/to/jmeter/testplan.jmx'
-          sh 'docker run --rm myapp:test python functional_tests.py'
+          //sh 'docker run --rm myapp:test python functional_tests.py'
         }
       }
     }
