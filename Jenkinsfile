@@ -25,5 +25,14 @@ pipeline {
         }
       }
     }
+    
+    stage('Package Artifact') {
+      steps {
+        sh 'docker build -t myapp:test .' // Construire l'image Docker de l'application avec le tag 'test'
+        sh 'docker save myapp:test > myapp-test.tar' // Enregistrer l'image Docker dans un fichier tar
+        archiveArtifacts 'myapp-test.tar' // Archiver l'artefact pour le déploiement ultérieur
+      }
+    }
+    
   }
 }
